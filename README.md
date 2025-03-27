@@ -42,49 +42,65 @@ Provides utility methods for dictionary manipulation:
 2. Create a new image
 3. Open Playground
 4. Load the project using the baseline:
-<pre>smalltalk
-```Metacello new
+```smalltalk
+Metacello new
     baseline: 'BitbucketPRStoryManager';
     repository: 'github://Evref-BL/Bitbucket-PR-Story-Manager';
     load.
-
+```
 
 ## Usage Examples
 
-### Tag AnalysisInitialize Tag Analyzer
+### Initialize Tag Analyzer
+```smalltalk
 tagAnalyzer := TagAnalyzer new.
+```
 
 ### Get all class names
+```smalltalk
 allClassesNames := tagAnalyzer getAllClassNamesOf: sourceModel.
+```
 
 ### Get classes from tags
+```smalltalk
 allTagsClassesNames := tagAnalyzer getClassesFromTagsOf: sourceModel.
+```
+
 
 ### Configure Bitbucket API
+```smalltalk
 bitbucketApi := BitbucketApi new
     host: 'https://your-bitbucket-host.com';
     bearerToken: 'your_personal_access_token'.
-
+```
 
 ### Retrieve Pull Request Diff
+```smalltalk
 changeDictionary := Dictionary new.
 diffResult := bitbucketApi pullRequests 
     diffOf: 'PR_ID' 
-    inRepository: 'carlsource' 
-    ofProject: 'CS'.
+    inRepository: 'repo_name' 
+    ofProject: 'project_name'.
+```
+
 
 ### Extract and Analyze Diffs
+```smalltalk
 diffs := diffResult at: 'diffs'.
 bitbucketDiffAnalyzer := BitbucketDiffAnalyzer new.
 changeDictionary := bitbucketDiffAnalyzer getDiffFor: diffs.
+```
+
 
 ### Select Stories Based on Diff
+```smalltalk
 storySelector := StorySelector new.
 selectedStories := storySelector 
     selectStoriesBasedOnDiff: changeDictionary 
-    forModel: carlsource.```
+    forModel: sourceModel.```
 
 ### Identify Uncovered Classes
+```smalltalk
 uncoveredClasses := OrderedCollection new. 
 changeClassesWithoutExtension := DictionaryUtils 
     removeExtensionsFrom: changeDictionary keys.
