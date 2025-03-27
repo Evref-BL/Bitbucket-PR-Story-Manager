@@ -34,7 +34,7 @@ Provides utility methods for dictionary manipulation:
 ## Installation
 
 ### Prerequisites
-- Pharo 9.0 or later
+- Pharo 11.0 or later
 - Bitbucket Pharo API
 - JaCoCo Tagger
 ### Installation Steps
@@ -42,7 +42,51 @@ Provides utility methods for dictionary manipulation:
 2. Create a new image
 3. Open Playground
 4. Load the project using the baseline:
+<pre>smalltalk
 ```Metacello new
     baseline: 'BitbucketPRStoryManager';
     repository: 'github://Evref-BL/Bitbucket-PR-Story-Manager';
     load.
+
+
+## Usage Examples
+
+### Tag AnalysisInitialize Tag Analyzer
+tagAnalyzer := TagAnalyzer new.
+
+### Get all class names
+allClassesNames := tagAnalyzer getAllClassNamesOf: sourceModel.
+
+### Get classes from tags
+allTagsClassesNames := tagAnalyzer getClassesFromTagsOf: sourceModel.
+
+### Configure Bitbucket API
+bitbucketApi := BitbucketApi new
+    host: 'https://your-bitbucket-host.com';
+    bearerToken: 'your_personal_access_token'.
+
+
+### Retrieve Pull Request Diff
+changeDictionary := Dictionary new.
+diffResult := bitbucketApi pullRequests 
+    diffOf: 'PR_ID' 
+    inRepository: 'carlsource' 
+    ofProject: 'CS'.
+
+### Extract and Analyze Diffs
+diffs := diffResult at: 'diffs'.
+bitbucketDiffAnalyzer := BitbucketDiffAnalyzer new.
+changeDictionary := bitbucketDiffAnalyzer getDiffFor: diffs.
+
+### Select Stories Based on Diff
+storySelector := StorySelector new.
+selectedStories := storySelector 
+    selectStoriesBasedOnDiff: changeDictionary 
+    forModel: carlsource.```
+
+### Identify Uncovered Classes
+uncoveredClasses := OrderedCollection new. 
+changeClassesWithoutExtension := DictionaryUtils 
+    removeExtensionsFrom: changeDictionary keys.
+uncoveredClasses := changeClassesWithoutExtension 
+    select: [:each | (allClassesNames includes: each) not].```
