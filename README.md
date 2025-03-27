@@ -77,6 +77,7 @@ bitbucketApi := BitbucketApi new
 ### Retrieve Pull Request Diff
 ```smalltalk
 changeDictionary := Dictionary new.
+
 diffResult := bitbucketApi pullRequests 
     diffOf: 'PR_ID' 
     inRepository: 'repo_name' 
@@ -87,7 +88,9 @@ diffResult := bitbucketApi pullRequests
 ### Extract and Analyze Diffs
 ```smalltalk
 diffs := diffResult at: 'diffs'.
+
 bitbucketDiffAnalyzer := BitbucketDiffAnalyzer new.
+
 changeDictionary := bitbucketDiffAnalyzer getDiffFor: diffs.
 ```
 
@@ -95,14 +98,15 @@ changeDictionary := bitbucketDiffAnalyzer getDiffFor: diffs.
 ### Select Stories Based on Diff
 ```smalltalk
 storySelector := StorySelector new.
-selectedStories := storySelector 
-    selectStoriesBasedOnDiff: changeDictionary 
-    forModel: sourceModel.```
+
+selectedStories := storySelector selectStoriesBasedOnDiff: changeDictionary forModel: sourceModel.
+```
 
 ### Identify Uncovered Classes
 ```smalltalk
-uncoveredClasses := OrderedCollection new. 
-changeClassesWithoutExtension := DictionaryUtils 
-    removeExtensionsFrom: changeDictionary keys.
-uncoveredClasses := changeClassesWithoutExtension 
-    select: [:each | (allClassesNames includes: each) not].```
+uncoveredClasses := OrderedCollection new.
+
+changeClassesWithoutExtension := DictionaryUtils removeExtensionsFrom: changeDictionary keys.
+
+uncoveredClasses := changeClassesWithoutExtension select: [:each | (allClassesNames includes: each) not].
+```
