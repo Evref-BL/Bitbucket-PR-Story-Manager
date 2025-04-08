@@ -19,11 +19,11 @@ BaselineOfBitbucketPRStoryManager >> defineDependencies: spec [
 
 	spec
 		baseline: 'Bitbucket-Pharo-API'
-		with: [ spec repository: 'github://Evref-BL/Bitbucket-Pharo-API:develop' ].
+		with: [ spec repository: 'github://Evref-BL/Bitbucket-Pharo-API' ].
 		
 		spec
 		baseline: 'JaCoCo-Tagger'
-		with: [ spec repository: 'github://Evref-BL/JaCoCo-Tagger:main' ]
+		with: [ spec repository: 'github://Evref-BL/JaCoCo-Tagger' ]
 ]
 
 { #category : 'baselines' }
