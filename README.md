@@ -70,14 +70,12 @@ allTagsClassesNames := tagAnalyzer getClassesFromTagsOf: sourceModel.
 ### Configure Bitbucket API
 ```smalltalk
 bitbucketApi := BitbucketApi new
-    host: 'https://your-bitbucket-host.com';
+    host: 'your-bitbucket-host.com';
     bearerToken: 'your_personal_access_token'.
 ```
 
 ### Retrieve Pull Request Diff
 ```smalltalk
-changeDictionary := Dictionary new.
-
 diffResult := bitbucketApi pullRequests 
     diffOf: 'PR_ID' 
     inRepository: 'repo_name' 
