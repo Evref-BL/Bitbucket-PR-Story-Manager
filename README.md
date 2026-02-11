@@ -45,7 +45,7 @@ Provides utility methods for dictionary manipulation:
 ```smalltalk
 Metacello new
     baseline: 'BitbucketPRStoryManager';
-    repository: 'github://Evref-BL/Bitbucket-PR-Story-Manager';
+    repository: 'github://Evref-BL/Bitbucket-PR-Story-Manager:main';
     load.
 ```
 
