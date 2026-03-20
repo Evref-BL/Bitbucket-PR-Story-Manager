@@ -45,41 +45,37 @@ TagAnalyzer >> getAllClassNamesOf: sourceModel [
 
 { #category : 'as yet unclassified' }
 TagAnalyzer >> getClassesForTags [
+    | allTagsClassesNames |
+    allTagsClassesNames := OrderedCollection new.
 
-	| tags |
-
- 	allTagsClassesNames := OrderedCollection new.
-   tags := sourceModel tags.
-
-    1 to: (tags size) do: [ :i |
-        | tag tagged taggedClasses sortedNames |
-        tag := sourceModel tags at: i.
-        tagged := tag taggedEntitiesInModel: sourceModel.
-        taggedClasses := tagged select: [ :each | each isClass ].
-        
-        sortedNames := (taggedClasses collect: [ :each | each name ]) asSortedCollection.
+    sourceModel tags do: [:tag |
+        | taggedClasses sortedNames |
+        taggedClasses := (tag taggedEntitiesInModel: sourceModel) select: [:each | each isClass].
+        sortedNames := (taggedClasses collect: [:each | each name]) asSortedCollection.
         allTagsClassesNames add: sortedNames.
     ].
-    
+
     ^ allTagsClassesNames.
+
 ]
 
 { #category : 'as yet unclassified' }
-TagAnalyzer >> getClassesFromTagsOf: sourceModel [.
+TagAnalyzer >> getClassesFromTagsOf: sourceModel [
 
- 	allTagsClassesNames := OrderedCollection new.
+	allTagsClassesNames := OrderedCollection new: sourceModel tags size.
 
-    1 to: (sourceModel tags size) do: [ :i |
-        | tag tagged taggedClasses sortedNames |
-        tag := sourceModel tags at: i.
-        tagged := tag taggedEntitiesInModel: sourceModel.
-        taggedClasses := tagged select: [ :each | each isClass ].
-        
-        sortedNames := (taggedClasses collect: [ :each | each name ]) asSortedCollection.
-        allTagsClassesNames add: sortedNames.
-    ].
-    
-    ^ allTagsClassesNames.
+	sourceModel tags do: [ :tag |
+		| tagged taggedClasses sortedNames |
+		tagged := tag taggedEntitiesInModel: sourceModel.
+		allTagsClassesNames add: (tagged
+				 select: [ :each | each isClass ]
+				 thenCollect: [ :each | each name ])
+
+		"[taggedClasses := tagged select: [ :each | each isClass ].
+        sortedNames := (taggedClasses collect: [ :each | each name ]) asSortedCollection.] bench
+        allTagsClassesNames add: sortedNames." ].
+
+	^ allTagsClassesNames
 ]
 
 { #category : 'accessing' }
